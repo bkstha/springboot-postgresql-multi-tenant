@@ -21,8 +21,8 @@
             <DefaultRolloverStrategy max="10"/>
         </RollingFile>
         <SMTP name="MailAppender"
-              subject="Log4j2 Demo [PROD]"
-              to="email@shresthab.com.np"
+              subject="APP LOG [PROD]"
+              to="bikashshrestha.bks@gmail.com"
               from="app@shresthab.com.np"
               smtpHost="smtp.gmail.com"
               smtpPort="587"

@@ -36,4 +36,8 @@ public class AppController {
         MultiTenantRegistration.createUserSchema("email@shresthab.com.np", schema);
         return "Schema Created";
     }
+
+    public static String trim(String value){
+        return value;
+    }
 }
