@@ -9,7 +9,7 @@ import java.util.Calendar;
 public abstract class AbstractModel implements Serializable {
 
 
-//    private static long serialVersionUID = 1L;
+    private static long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "idgen")
     private Long id;

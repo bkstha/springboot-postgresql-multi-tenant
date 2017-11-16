@@ -1,5 +1,6 @@
 package com.journal.app.models.domain;
 
+import com.journal.app.controllers.App;
 import com.journal.app.controllers.AppController;
 import com.journal.app.models.enums.ACCOUNT;
 import org.hibernate.annotations.GenericGenerator;
@@ -13,7 +14,7 @@ import java.util.List;
 @Table(name = "account_groups")
 @GenericGenerator(
         name = "idgen",
-        strategy = "UseIdOrGenerate",
+        strategy = "com.journal.app.models.UseIdOrGenerate",
         parameters = {
                 @org.hibernate.annotations.Parameter(name = "sequence_name", value = "seq_app"),
                 @org.hibernate.annotations.Parameter(name = "initial_value", value = "1"),
@@ -236,7 +237,7 @@ public class AccountGroup extends AbstractModel {
 
     public AccountGroup(ACCOUNT account, String name, Long parentId, Boolean modifyStatus, Boolean accountStatus) {
         this.account = account;
-        this.name = AppController.trim(name);
+        this.name = App.trim(name);
         this.parentId = parentId;
         this.modifyStatus = modifyStatus;
         this.accountStatus = accountStatus;

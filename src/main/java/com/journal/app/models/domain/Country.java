@@ -13,7 +13,7 @@ import java.util.List;
 @Table(name = "countries")
 @GenericGenerator(
         name = "idgen",
-        strategy = "UseIdOrGenerate",
+        strategy = "com.journal.app.models.UseIdOrGenerate",
         parameters = {
                 @org.hibernate.annotations.Parameter(name = "sequence_name", value = "seq_private"),
                 @org.hibernate.annotations.Parameter(name = "initial_value", value = "1"),

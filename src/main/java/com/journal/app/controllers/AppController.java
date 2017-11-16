@@ -37,7 +37,5 @@ public class AppController {
         return "Schema Created";
     }
 
-    public static String trim(String value){
-        return value;
-    }
+
 }

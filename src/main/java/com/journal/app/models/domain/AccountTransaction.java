@@ -10,7 +10,7 @@ import java.util.Date;
 @Table(name = "account_transactions")
 @GenericGenerator(
         name = "idgen",
-        strategy = "UseIdOrGenerate",
+        strategy = "com.journal.app.models.UseIdOrGenerate",
         parameters = {
                 @org.hibernate.annotations.Parameter(name = "sequence_name", value = "seq_account_transaction"),
                 @org.hibernate.annotations.Parameter(name = "initial_value", value = "1"),
@@ -31,10 +31,10 @@ public class AccountTransaction extends AbstractModel {
     @JoinColumn(name = "account_id", nullable = false, foreignKey = @ForeignKey(name = "fk_account_id"))
     private AccountGroup account;
 
-    @Column(name = "dr_amount", columnDefinition = "decimal(20,6)", nullable = false)
+    @Column(name = "dr_amount", columnDefinition = "decimal(20,2)", nullable = false)
     private BigDecimal drAmount = new BigDecimal(0);
 
-    @Column(name = "cr_amount", columnDefinition = "decimal(20,6)", nullable = false)
+    @Column(name = "cr_amount", columnDefinition = "decimal(20,2)", nullable = false)
     private BigDecimal crAmount = new BigDecimal(0);
 
     @Column(name = "source", nullable = false)

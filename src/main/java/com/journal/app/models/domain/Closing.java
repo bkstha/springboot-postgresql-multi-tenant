@@ -11,7 +11,7 @@ import java.math.BigDecimal;
 @Table(name = "closings")
 @GenericGenerator(
         name = "idgen",
-        strategy = "UseIdOrGenerate",
+        strategy = "com.journal.app.models.UseIdOrGenerate",
         parameters = {
                 @org.hibernate.annotations.Parameter(name = "sequence_name", value = "seq_public"),
                 @org.hibernate.annotations.Parameter(name = "initial_value", value = "1"),
@@ -29,7 +29,7 @@ public class Closing extends AbstractModel {
     @JoinColumn(name = "account_id", nullable = false, foreignKey = @ForeignKey(name = "fk_account_id"))
     public AccountGroup account;
 
-    @Column(name = "amount", columnDefinition = "decimal(20, 6)", nullable = false)
+    @Column(name = "amount", columnDefinition = "decimal(20, 2)", nullable = false)
     public BigDecimal amount;
 
     public Closing(){}
