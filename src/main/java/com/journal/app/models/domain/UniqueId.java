@@ -33,6 +33,11 @@ public class UniqueId extends AbstractModel {
         this.code = code;
         this.uniqueId = uniqueId;
     }
+    public UniqueId(Long id, String code, long uniqueId) {
+        this.setId(id);
+        this.code = code;
+        this.uniqueId = uniqueId;
+    }
 
 
     //getter-setter

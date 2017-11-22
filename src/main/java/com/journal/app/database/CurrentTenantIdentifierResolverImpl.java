@@ -13,7 +13,7 @@ public class CurrentTenantIdentifierResolverImpl implements CurrentTenantIdentif
     @Override
     public String resolveCurrentTenantIdentifier() {
 //        String userSchema = App.getUserSchema();
-        String userSchema = "schema1";
+        String userSchema = "public";
         if (userSchema == null) {
 //            Logger.info("resolveCurrentTenantIdentifier to public (user=" + userSchema + ")");
             return "public";

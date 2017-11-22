@@ -25,7 +25,7 @@ import java.util.List;
 public class AccountGroup extends AbstractModel {
 
     @Column(name = "account_type")
-    @Enumerated(EnumType.ORDINAL)
+    @Enumerated(EnumType.STRING)
     private ACCOUNT account;
 
     @Column(name = "name", length = 50)
@@ -43,10 +43,10 @@ public class AccountGroup extends AbstractModel {
     @Column(name = "active")
     private Boolean active = true;
 
-    @Column(name = "opening_balance", columnDefinition = "decimal(20,2)", nullable = true)
+    @Column(name = "opening_balance", columnDefinition = "decimal(20,2)", nullable = false)
     private BigDecimal openingBalance = new BigDecimal(0);
 
-    @Column(name = "paid_opening_balance", columnDefinition = "decimal(20,2)", nullable = true)
+    @Column(name = "paid_opening_balance", columnDefinition = "decimal(20,2)", nullable = false)
     private BigDecimal paidOpeningBalance = new BigDecimal(0);
 
     @Column(name = "current_balance", columnDefinition = "decimal(20,2)", nullable = false)

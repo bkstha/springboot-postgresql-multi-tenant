@@ -92,7 +92,6 @@ public class MultiTenantRegistration implements ServiceRegistryAwareService, Int
             try {
                 statement.execute("CREATE SCHEMA " + schema + "");
                 logger.info("Schema " + schema + " created...");
-//                System.out.println("Schema " + schema + " created...");
             } catch (SQLException e) {
                 String message = "Schema " + schema + " for user " + userMail + " already exists";
                 if (errorIfSchemaExists) {
@@ -110,9 +109,8 @@ public class MultiTenantRegistration implements ServiceRegistryAwareService, Int
         }
         try (Connection connection = multiTenantConnectionProvider.getConnection(schema)) {
             logger.info("creating tables for schema " + schema);
-//            System.out.println("creating tables for schema " + schema);
             if (!connection.getSchema().equals(schema)) {
-                System.out.println("invalid schema detected");
+                logger.info("invalid schema detected");
                 throw new RuntimeException("Invalid schema detected");
             }
 
@@ -132,7 +130,7 @@ public class MultiTenantRegistration implements ServiceRegistryAwareService, Int
         }
         try (Connection connection = multiTenantConnectionProvider.getConnection(schema);
              Statement statement = connection.createStatement()) {
-//            logger.info("deleting tables for schema: " + schema);
+            logger.info("deleting tables for schema: " + schema);
             ResultSet rs = statement.executeQuery("SELECT EXISTS(SELECT 1 FROM pg_namespace WHERE nspname = '" + schema + "') as schema_exists");
             rs.next();
             boolean schemaExists = rs.getBoolean("schema_exists");
@@ -142,11 +140,11 @@ public class MultiTenantRegistration implements ServiceRegistryAwareService, Int
                         try {
                             statement.execute("DROP TABLE " + schema + "." + sharedTable + " CASCADE ");
                         } catch (SQLException e) {
-//                            logger.error("Unable to drop table " + sharedTable, e);
+                            logger.error("Unable to drop table " + sharedTable, e);
                         }
                     }
                 } else {
-//                    logger.warn("Schema " + schema + " does not exists...");
+                    logger.warn("Schema " + schema + " does not exists...");
                 }
             }
         } catch (SQLException e) {
