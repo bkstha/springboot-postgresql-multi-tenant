@@ -3,23 +3,24 @@ package com.journal.app.controllers;
 
 import com.journal.app.database.MultiTenantRegistration;
 import com.journal.app.models.DTO.UserDTO;
+import com.journal.app.models.domain.Company;
 import com.journal.app.models.domain.User;
+import com.journal.app.models.enums.CalendarType;
+import com.journal.app.models.enums.Gender;
+import com.journal.app.models.enums.InvoiceType;
 import com.journal.app.models.services.UserService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.PersistenceContext;
-import javax.persistence.PersistenceUnit;
 import java.sql.Connection;
 import java.util.Calendar;
-import java.util.concurrent.CompletableFuture;
 
 @RestController
 public class AppController {
@@ -29,6 +30,9 @@ public class AppController {
     @Autowired
     private UserService userService;
 
+    @Value("${app.crypto.salt}")
+    private String salt;
+
     @RequestMapping("/")
     @ResponseBody
     @Transactional(readOnly = true)
@@ -36,7 +40,7 @@ public class AppController {
         return "Hello Index Page";
     }
 
-    @RequestMapping("/CreateSchema/{schema}")
+    @RequestMapping("/admin/CreateSchema/{schema}")
     @ResponseBody
     public String createSchema(@PathVariable(name = "schema") String schema) {
         Connection schemaConnection = null;
@@ -45,10 +49,10 @@ public class AppController {
         System.out.println(schema);
         MultiTenantRegistration.createPublicSchema();
         MultiTenantRegistration.createUserSchema("email@shresthab.com.np", schema);
-        try{
+        try {
             App.setDefaultData(schema, schemaSession, schemaTransaction);
             schemaTransaction.commit();
-        }catch (Exception e){
+        } catch (Exception e) {
             schemaTransaction.rollback();
             logger.error("Unable to initialize default data");
             logger.error("Error Occurred: ", e);
@@ -58,12 +62,12 @@ public class AppController {
     }
 
 
-    @RequestMapping("/SetupDefaultData")
+    @RequestMapping("/InitializeApp")
     @ResponseBody
     @Transactional()
-    public String setupDefaultData() {
+    public String initializeApp() {
 
-//        return CompletableFuture.runAsync(() -> {
+
         Connection schemaConnection = null;
         Session schemaSession = null;
         Transaction schemaTransaction = null;
@@ -72,34 +76,60 @@ public class AppController {
             schemaSession = MultiTenantRegistration.getSession(schemaConnection);
             schemaTransaction = schemaSession.beginTransaction();
             App.setDefaultData("public", schemaSession, schemaTransaction);
-//                if (!App.schemaExist("suraj-app", jpaApi)) {
-//            MultiTenantRegistration.createUserSchema("email@shresthab.com.np", "surajappschema");
-//                Logger.info("Initializing default data for surajappschema");
-//                App.setDefaultData("surajappschema", schemaSession, schemaTransaction);
 
-//                Logger.info("creating company surajappschema");
-//                Company company = new Company();
-//                company.name = "suraj-company";
-//                company.address = "kuleshwor-14, ktm";
-//                company.city = "kathmandu";
-//                company.email = "email@shresthab.com.np";
-//                company.mobileNumber = "9849636369";
-//                company.phoneNumber = "9849636369";
-//                company.schema = "surajappschema";
-//                company.startMonth = "shrawan";
-//                company.state = "bagmati";
-//                company.zipCode = "44600";
-//                company.country = Country.findByName("Nepal", jpaApi);
-//                company.startDate = Calendar.getInstance();
-//                company.currency = company.country;
-//                company.calendarType = CalendarType.IN;
-//                company.invoiceType = InvoiceType.Hostel;
-//                company.schemaStatus = true;
-//                company.setupStatus = true;
-//                schemaSession.save(company);
+            if (UserService.isTableEmpty(schemaSession)) {
+                logger.info("Inserting default User...");
+                User user = new User();
+                user.setUsername("admin");
+                user.setEmail("email@shresthab.com.np");
+                user.setPassword(BCrypt.hashpw("password", salt));
+                user.setLoginAccess(true);
+                user.setName("Bikash Shrestha");
+                user.setContactNumber("9849636369");
+                user.setGender(Gender.M);
+                schemaSession.save(user);
+            }
+            String surajAppSchema = "surajappsc";
+            if (!App.schemaExist(surajAppSchema, schemaSession)) {
 
-//                }
+                MultiTenantRegistration.createUserSchema("email@shresthab.com.np", surajAppSchema);
+                logger.info("Initializing default data for " + surajAppSchema);
 
+                Connection schemaConnection2 = null;
+                Session schemaSession2 = null;
+                Transaction schemaTransaction2 = null;
+
+                try {
+                    schemaConnection2 = MultiTenantRegistration.getConnection(surajAppSchema);
+                    schemaSession2 = MultiTenantRegistration.getSession(schemaConnection2);
+                    schemaTransaction2 = schemaSession2.beginTransaction();
+                    App.setDefaultData(surajAppSchema, schemaSession2, schemaTransaction2);
+
+                    logger.info("creating company " + surajAppSchema);
+                    Company company = new Company();
+                    company.setName("suraj-company");
+                    company.setAddress("kuleshwor-14, ktm");
+                    company.setCity("kathmandu");
+                    company.setEmail("email@shresthab.com.np");
+                    company.setMobileNumber("9849636369");
+                    company.setPhoneNumber("9849636369");
+                    company.setSchema(surajAppSchema);
+                    company.setStartMonth("shrawan");
+                    company.setState("bagmati");
+                    company.setZipCode("44600");
+                    company.setStartDate(Calendar.getInstance());
+                    company.setCalendarType(CalendarType.IN);
+                    company.setInvoiceType(InvoiceType.Hostel);
+                    company.setSchemaStatus(true);
+                    company.setSetupStatus(true);
+                    schemaSession.save(company);
+
+                    schemaTransaction2.commit();
+                } catch (Exception e) {
+                    logger.error("Error Occurred while adding default data to " + surajAppSchema, e);
+                    schemaTransaction2.rollback();
+                }
+            }
             schemaTransaction.commit();
             logger.info("Default public data created");
         } catch (Exception e) {
@@ -107,9 +137,6 @@ public class AppController {
             logger.error("Unable to initialize default data");
             logger.error("Error Occurred: ", e);
         }
-//            });
-//        }).toString();
-//        App.setDefaultData();
         return "Default Data Created";
     }
 

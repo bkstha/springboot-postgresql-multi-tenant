@@ -3,6 +3,7 @@ package com.journal.app.models.services;
 import com.journal.app.models.DTO.UserDTO;
 import com.journal.app.models.domain.User;
 import com.journal.app.models.repositories.UserRepository;
+import org.hibernate.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -25,7 +26,7 @@ public class UserService {
 
     //add user
     public void addUser(UserDTO userDTO) {
-        User user=new User();
+        User user = new User();
         user.setUsername(userDTO.getUsername());
         user.setPassword(userDTO.getPassword());
 
@@ -45,6 +46,15 @@ public class UserService {
     //delete user with id
     public void deleteUser(Long id) {
         userRepository.delete(id);
+    }
+
+    public static boolean isTableEmpty(Session session) {
+        boolean b;
+        Long total = (Long) session
+                .createQuery("select count(c) from User c")
+                .getSingleResult();
+        b = total <= 0;
+        return b;
     }
 }
 

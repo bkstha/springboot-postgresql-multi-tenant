@@ -110,7 +110,7 @@ public class MultiTenantRegistration implements ServiceRegistryAwareService, Int
         try (Connection connection = multiTenantConnectionProvider.getConnection(schema)) {
             logger.info("creating tables for schema " + schema);
             if (!connection.getSchema().equals(schema)) {
-                logger.info("invalid schema detected");
+                logger.info("invalid schema detected", schema, connection.getSchema());
                 throw new RuntimeException("Invalid schema detected");
             }
 

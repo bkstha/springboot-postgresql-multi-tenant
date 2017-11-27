@@ -23,7 +23,6 @@ public class App {
 
     public static void setDefaultData(String schema, Session schemaSession, Transaction schemaTransaction) {
         try {
-            System.out.println("uniqueIdCount: " + UniqueIdService.isUniqueIdEmpty(schemaSession));
             if (UniqueIdService.isUniqueIdEmpty(schemaSession)) {
                 UniqueId u1 = new UniqueId("P", 1);
                 UniqueId u2 = new UniqueId("SI", 1);
@@ -32,7 +31,6 @@ public class App {
                 schemaSession.save(u2);
                 schemaSession.save(u3);
                 logger.info("Default Unique Id Generated.");
-
             }
 
             if (AccountGroupService.isTableEmpty(schemaSession)) {
@@ -197,7 +195,6 @@ public class App {
 
                 AccountGroup ag777 = new AccountGroup(ACCOUNT.L, "security deposit", ag18.getId(), false, true);
                 schemaSession.save(ag777);
-
                 logger.info("Default accounts Generated.");
             }
         } catch (Exception e) {
@@ -206,5 +203,16 @@ public class App {
             logger.error("Error Occurred initializing default data for schema " + schema);
             throw e;
         }
+    }
+
+    public static boolean schemaExist(String schema, Session session) {
+        boolean b = false;
+        try {
+            b = (Boolean) session.createNativeQuery("SELECT EXISTS(SELECT 1 FROM pg_namespace WHERE nspname = '" + schema + "')").getSingleResult();
+        } catch (Exception e) {
+            logger.error("Error Occurred while getting schema detail");
+            e.printStackTrace();
+        }
+        return b;
     }
 }

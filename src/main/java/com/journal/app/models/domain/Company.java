@@ -54,7 +54,7 @@ public class Company extends AbstractModel {
     private String state;
 
     @ManyToOne
-    @JoinColumn(name = "country", nullable = false, foreignKey = @ForeignKey(name = "fk_country_id"))
+    @JoinColumn(name = "country", foreignKey = @ForeignKey(name = "fk_country_id"))
     private Country country;
 
     @Temporal(TemporalType.DATE)
@@ -72,7 +72,7 @@ public class Company extends AbstractModel {
     private String fiscalYear;
 
     @ManyToOne
-    @JoinColumn(name = "currency", nullable = false, foreignKey = @ForeignKey(name = "fk_currency_id"))
+    @JoinColumn(name = "currency", foreignKey = @ForeignKey(name = "fk_currency_id"))
     private Country currency;
 
     @Column(name = "tax_id")
@@ -133,7 +133,7 @@ public class Company extends AbstractModel {
     private BigDecimal servicePercentHotel;
 
     @Column(name = "invoice_seq", columnDefinition = "int default 1", nullable = false)
-    private Integer invoiceSequence;
+    private Integer invoiceSequence=1;
 
     @Column(name = "user_limit", columnDefinition = "int default 2", nullable = false)
     private Integer userLimit=99;
@@ -152,13 +152,13 @@ public class Company extends AbstractModel {
     @Column(name = "warehouse_limit",nullable = false, columnDefinition = "int default 1")
     private Integer warehouseLimit=1;
 
-    @Column(name = "chequeManager", nullable = false, columnDefinition = "boolean default false")
+    @Column(name = "cheque_manager", nullable = false, columnDefinition = "boolean default false")
     private Boolean chequeManager = false;
 
-    @Column(name = "fixedAsset", nullable = false, columnDefinition = "boolean default false")
+    @Column(name = "fixed_asset", nullable = false, columnDefinition = "boolean default false")
     private Boolean fixedAsset = false;
 
-    @Column(name = "payRoll", nullable = false, columnDefinition = "boolean default false")
+    @Column(name = "pay_roll", nullable = false, columnDefinition = "boolean default false")
     private Boolean payRoll = false;
 
     @OneToMany(mappedBy = "company")
