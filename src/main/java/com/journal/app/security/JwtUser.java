@@ -13,31 +13,48 @@ import java.util.Date;
 public class JwtUser implements UserDetails {
 
     private final Long id;
+    private final Long ucid;
     private final String username;
     private final String name;
     private final String password;
     private final String email;
+    private final String schema;
     private final Collection<? extends GrantedAuthority> authorities;
     private final boolean enabled;
-//    private final Date lastPasswordResetDate;
+    private final Date lastPasswordResetDate;
 
     public JwtUser(
           Long id,
+          Long ucid,
           String username,
           String name,
           String email,
-          String password, Collection<? extends GrantedAuthority> authorities,
-          boolean enabled
-//          Date lastPasswordResetDate
+          String password,
+          String schema,
+          Collection<? extends GrantedAuthority> authorities,
+          boolean enabled,
+          Date lastPasswordResetDate
     ) {
         this.id = id;
+        this.ucid = ucid;
         this.username = username;
         this.name=name;
         this.email = email;
         this.password = password;
+        this.schema = schema;
         this.authorities = authorities;
         this.enabled = enabled;
-//        this.lastPasswordResetDate = lastPasswordResetDate;
+        this.lastPasswordResetDate = lastPasswordResetDate;
+    }
+
+
+
+    public Long getUcid() {
+        return ucid;
+    }
+
+    public String getSchema() {
+        return schema;
     }
 
     @JsonIgnore
@@ -68,10 +85,12 @@ public class JwtUser implements UserDetails {
         return true;
     }
 
+    @JsonIgnore
     public String getName() {
         return name;
     }
 
+    @JsonIgnore
     public String getEmail() {
         return email;
     }
@@ -92,8 +111,8 @@ public class JwtUser implements UserDetails {
         return enabled;
     }
 
-//    @JsonIgnore
-//    public Date getLastPasswordResetDate() {
-//        return lastPasswordResetDate;
-//    }
+    @JsonIgnore
+    public Date getLastPasswordResetDate() {
+        return lastPasswordResetDate;
+    }
 }

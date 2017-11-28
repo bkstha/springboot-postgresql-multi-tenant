@@ -16,13 +16,16 @@ public final class JwtUserFactory {
 
     public static JwtUser create(UserCompany userCompany) {
         return new JwtUser(
+                userCompany.getUser().getId(),
                 userCompany.getId(),
                 userCompany.getUser().getUsername(),
                 userCompany.getUser().getName(),
                 userCompany.getUser().getEmail(),
                 userCompany.getUser().getPassword(),
+                userCompany.getCompany().getSchema(),
                 mapToGrantedAuthorities(userCompany.getAuthorities()),
-                userCompany.getEnabled()
+                userCompany.getEnabled(),
+                userCompany.getUser().getLastPasswordResetDate()
         );
     }
 

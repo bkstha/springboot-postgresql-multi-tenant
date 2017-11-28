@@ -1,6 +1,8 @@
 package com.journal.app.security.service;
 
 import com.journal.app.models.domain.User;
+import com.journal.app.models.domain.UserCompany;
+import com.journal.app.models.repositories.UserCompanyRepository;
 import com.journal.app.models.repositories.UserRepository;
 import com.journal.app.security.JwtUserFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,12 +17,16 @@ import org.springframework.stereotype.Service;
 @Service
 public class JwtUserDetailsServiceImpl implements UserDetailsService {
 
+//    @Autowired
+//    private UserRepository userRepository;
+
     @Autowired
-    private UserRepository userRepository;
+    private UserCompanyRepository userCompanyRepository;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = userRepository.findByUsername(username);
+//        User user = userRepository.findByUsername(username);
+        UserCompany user = userCompanyRepository.findOne(Long.parseLong(username));
 
         if (user == null) {
             throw new UsernameNotFoundException(String.format("No user found with username '%s'.", username));

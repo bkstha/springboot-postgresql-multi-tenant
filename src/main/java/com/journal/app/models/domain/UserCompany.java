@@ -6,6 +6,7 @@ import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.Date;
 import java.util.List;
 
 
@@ -51,6 +52,8 @@ public class UserCompany extends AbstractModel {
     @Column(name = "enabled")
     @NotNull
     private Boolean enabled;
+
+
 
 //    @Column(name = "due_date_format", nullable = false)
 //    @Enumerated(EnumType.ORDINAL)

@@ -11,18 +11,18 @@ import org.springframework.stereotype.Service;
 @Service
 public class UserCompanyService {
 
-    @Autowired
-    private UserCompanyRepository userCompanyRepository;
+//    @Autowired
+//    private UserCompanyRepository userCompanyRepository;
 
 
-    public UserDetails loadUserByUserIdAndCompanyId(long userId, long companyId) throws UsernameNotFoundException {
-        UserCompany user = userCompanyRepository.findByUserIdAndCompanyId(userId, companyId);
-
-        if (user == null) {
-            throw new UsernameNotFoundException(String.format("No user found with username '%s'.", username));
-        } else {
-            return JwtUserFactory.create(user);
-        }
-    }
+//    public UserDetails loadUserByUserIdAndCompanyId(long userId, long companyId) throws UsernameNotFoundException {
+//        UserCompany user = userCompanyRepository.findByUserIdAndCompanyId(userId, companyId);
+//
+//        if (user == null) {
+//            throw new UsernameNotFoundException(String.format("No user found with username '%s'.", username));
+//        } else {
+//            return JwtUserFactory.create(user);
+//        }
+//    }
 
 }

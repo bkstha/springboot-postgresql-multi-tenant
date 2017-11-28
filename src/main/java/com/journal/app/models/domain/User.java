@@ -7,7 +7,9 @@ import org.hibernate.Session;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -73,9 +75,21 @@ public class User extends AbstractModel {
     @OneToMany(mappedBy = "user")
     private List<UserCompany> userCompanyList;
 
+    @Column(name = "LAST_PASSWORD_RESET_DATE")
+    @Temporal(TemporalType.TIMESTAMP)
+    @NotNull
+    private Date lastPasswordResetDate;
 
 
     //getter-setter
+
+    public Date getLastPasswordResetDate() {
+        return lastPasswordResetDate;
+    }
+
+    public void setLastPasswordResetDate(Date lastPasswordResetDate) {
+        this.lastPasswordResetDate = lastPasswordResetDate;
+    }
 
     public String getName() {
         return name;
