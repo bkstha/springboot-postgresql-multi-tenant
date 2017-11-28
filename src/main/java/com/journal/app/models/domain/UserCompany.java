@@ -5,6 +5,8 @@ import com.journal.app.models.enums.UserRole;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import java.util.List;
 
 
 @Entity
@@ -35,12 +37,20 @@ public class UserCompany extends AbstractModel {
     @Column(name = "parties_id")
     private Long partiesId;
 
-    @Enumerated(EnumType.STRING)
-    private UserRole role;
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "USER_COMPANY_AUTHORITY",
+            joinColumns = {@JoinColumn(name = "USER_ID", referencedColumnName = "ID")},
+            inverseJoinColumns = {@JoinColumn(name = "AUTHORITY_ID", referencedColumnName = "ID")})
+    private List<Authority> authorities;
 
     @Column(name = "date_type", nullable = false)
     @Enumerated(EnumType.STRING)
     private UserDate dateType = UserDate.INT;
+
+    @Column(name = "enabled")
+    @NotNull
+    private Boolean enabled;
 
 //    @Column(name = "due_date_format", nullable = false)
 //    @Enumerated(EnumType.ORDINAL)
@@ -98,19 +108,27 @@ public class UserCompany extends AbstractModel {
         this.partiesId = partiesId;
     }
 
-    public UserRole getRole() {
-        return role;
-    }
-
-    public void setRole(UserRole role) {
-        this.role = role;
-    }
-
     public UserDate getDateType() {
         return dateType;
     }
 
     public void setDateType(UserDate dateType) {
         this.dateType = dateType;
+    }
+
+    public List<Authority> getAuthorities() {
+        return authorities;
+    }
+
+    public void setAuthorities(List<Authority> authorities) {
+        this.authorities = authorities;
+    }
+
+    public Boolean getEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(Boolean enabled) {
+        this.enabled = enabled;
     }
 }
