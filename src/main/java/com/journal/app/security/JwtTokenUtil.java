@@ -1,6 +1,7 @@
 package com.journal.app.security;
 
 
+import com.journal.app.models.DTO.auth.UserDetailDTO;
 import com.journal.app.utils.TimeProvider;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -43,10 +44,6 @@ public class JwtTokenUtil implements Serializable {
     public String getUsernameFromToken(String token) {
         return getClaimFromToken(token, Claims::getSubject);
     }
-
-//    public String getSchemaFromToken(String token) {
-//        return getClaimFromToken(token, Claims::get);
-//    }
 
     public Date getIssuedAtDateFromToken(String token) {
         return getClaimFromToken(token, Claims::getIssuedAt);
@@ -101,6 +98,10 @@ public class JwtTokenUtil implements Serializable {
     public String generateToken(UserDetails userDetails, Device device) {
         Map<String, Object> claims = new HashMap<>();
         return doGenerateToken(claims, userDetails.getUsername(), generateAudience(device));
+    }
+    public String generateToken(String username, Device device) {
+        Map<String, Object> claims = new HashMap<>();
+        return doGenerateToken(claims, username, generateAudience(device));
     }
 
     private String doGenerateToken(Map<String, Object> claims, String subject, String audience) {

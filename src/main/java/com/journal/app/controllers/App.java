@@ -18,7 +18,11 @@ public class App {
     private static final Logger logger = LogManager.getLogger(App.class);
 
     public static String trim(String value) {
-        return value;
+        if (value == null || value.equals("")) {
+            return null;
+        } else {
+            return value.trim().replaceAll("\\s+", " ").toLowerCase();
+        }
     }
 
     public static void setDefaultData(String schema, Session schemaSession, Transaction schemaTransaction) {

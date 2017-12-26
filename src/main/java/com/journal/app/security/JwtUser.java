@@ -47,15 +47,36 @@ public class JwtUser implements UserDetails {
         this.lastPasswordResetDate = lastPasswordResetDate;
     }
 
+//    public JwtUser(
+//          Long id,
+//          Long ucid,
+//          String username,
+//          String name,
+//          String email,
+//          String password,
+//          String schema,
+//          Collection<? extends GrantedAuthority> authorities,
+//          boolean enabled,
+//          Date lastPasswordResetDate
+//    ) {
+//        this.id = id;
+//        this.username = username;
+//        this.name=name;
+//        this.email = email;
+//        this.password = password;
+//        this.enabled = enabled;
+//        this.lastPasswordResetDate = lastPasswordResetDate;
+//    }
 
 
-    public Long getUcid() {
-        return ucid;
-    }
-
-    public String getSchema() {
-        return schema;
-    }
+//
+//    public Long getUcid() {
+//        return ucid;
+//    }
+//
+//    public String getSchema() {
+//        return schema;
+//    }
 
     @JsonIgnore
     public Long getId() {

@@ -21,7 +21,7 @@ import java.util.List;
 )
 public class Authority extends AbstractModel{
 
-    @Column(name = "name", length = 50)
+    @Column(name = "name", length = 2)
     @NotNull
     @Enumerated(EnumType.STRING)
     private UserRole role;

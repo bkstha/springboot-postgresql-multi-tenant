@@ -77,11 +77,21 @@ public class User extends AbstractModel {
 
     @Column(name = "LAST_PASSWORD_RESET_DATE")
     @Temporal(TemporalType.TIMESTAMP)
-    @NotNull
     private Date lastPasswordResetDate;
+
+    @Column(name = "enabled")
+    private Boolean enabled=true;
 
 
     //getter-setter
+
+    public Boolean getEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(Boolean enabled) {
+        this.enabled = enabled;
+    }
 
     public Date getLastPasswordResetDate() {
         return lastPasswordResetDate;

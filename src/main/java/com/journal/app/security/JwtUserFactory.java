@@ -14,20 +14,31 @@ public final class JwtUserFactory {
     private JwtUserFactory() {
     }
 
-    public static JwtUser create(UserCompany userCompany) {
-        return new JwtUser(
-                userCompany.getUser().getId(),
-                userCompany.getId(),
-                userCompany.getUser().getUsername(),
-                userCompany.getUser().getName(),
-                userCompany.getUser().getEmail(),
-                userCompany.getUser().getPassword(),
-                userCompany.getCompany().getSchema(),
-                mapToGrantedAuthorities(userCompany.getAuthorities()),
-                userCompany.getEnabled(),
-                userCompany.getUser().getLastPasswordResetDate()
-        );
-    }
+//    public static JwtUser create(UserCompany userCompany) {
+//        return new JwtUser(
+//                userCompany.getUser().getId(),
+//                userCompany.getId(),
+//                userCompany.getUser().getUsername(),
+//                userCompany.getUser().getName(),
+//                userCompany.getUser().getEmail(),
+//                userCompany.getUser().getPassword(),
+//                userCompany.getCompany().getSchema(),
+//                mapToGrantedAuthorities(userCompany.getAuthorities()),
+//                userCompany.getEnabled(),
+//                userCompany.getUser().getLastPasswordResetDate()
+//        );
+//    }
+//    public static JwtUser create(User userCompany) {
+//        return new JwtUser(
+//                userCompany.getId(),
+//                userCompany.getUsername(),
+//                userCompany.getName(),
+//                userCompany.getEmail(),
+//                userCompany.getPassword(),
+//                userCompany.getEnabled(),
+//                userCompany.getLastPasswordResetDate()
+//        );
+//    }
 
     private static List<GrantedAuthority> mapToGrantedAuthorities(List<Authority> authorities) {
         return authorities.stream()

@@ -1,8 +1,12 @@
 package com.journal.app.models.services;
 
+import com.journal.app.controllers.App;
+import com.journal.app.controllers.AppController;
 import com.journal.app.models.DTO.UserDTO;
 import com.journal.app.models.domain.User;
 import com.journal.app.models.repositories.UserRepository;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.hibernate.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,7 +17,7 @@ import java.util.List;
 
 @Service
 public class UserService {
-
+    private static final Logger logger = LogManager.getLogger(UserService.class);
     @Autowired
     private UserRepository userRepository;
 
@@ -55,6 +59,15 @@ public class UserService {
                 .getSingleResult();
         b = total <= 0;
         return b;
+    }
+
+    public User findByUserAndPassword(String username, String password) {
+//        try {
+        return userRepository.findByUserAndPassword(username, password);
+//        } catch (Exception e) {
+//            logger.warn("no data");
+//            return null;
+//        }
     }
 }
 
