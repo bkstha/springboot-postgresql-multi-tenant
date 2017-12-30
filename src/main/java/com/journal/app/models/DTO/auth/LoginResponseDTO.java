@@ -10,6 +10,8 @@ public class LoginResponseDTO {
 
     private Long ucid;
 
+    private Long uid;
+
     private List<String> errors;
 
     private String token;
@@ -20,6 +22,14 @@ public class LoginResponseDTO {
 
 
     //getter-setter
+
+    public Long getUid() {
+        return uid;
+    }
+
+    public void setUid(Long uid) {
+        this.uid = uid;
+    }
 
     public String getUsername() {
         return username;

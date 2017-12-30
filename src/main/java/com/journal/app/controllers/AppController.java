@@ -42,7 +42,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
-@CrossOrigin
 @RestController
 public class AppController {
 
@@ -101,7 +100,7 @@ public class AppController {
 
     @RequestMapping(method = RequestMethod.POST, value = "/login")
     @ResponseBody
-    public ResponseEntity<LoginResponseDTO> login(@RequestBody JwtAuthenticationRequest jwtAuthenticationRequest, Device device) throws JSONException {
+    public ResponseEntity<LoginResponseDTO> login(@RequestBody JwtAuthenticationRequest jwtAuthenticationRequest, Device device) {
 
         System.out.println(jwtAuthenticationRequest);
         System.out.println("device");
@@ -120,12 +119,13 @@ public class AppController {
             response.setErrors(errors);
             return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
         }
+        response.setUid(user.getId());
         if (user.getUserCompanyList().size() == 1) {
             UserCompany userCompany = user.getUserCompanyList().get(0);
             List<Authority> authorities = userCompany.getAuthorities();
             response.setSchema(userCompany.getCompany().getSchema());
             response.setUcid(userCompany.getId());
-            authorities.stream().forEach((authority) -> {
+            authorities.forEach((authority) -> {
                 System.out.println("user roles: " + authority.getRole());
                 if (authority.getRole().equals(UserRole.A) || authority.getRole().equals(UserRole.AA) || authority.getRole().equals(UserRole.Z)) {
                     response.setToCompanyList(true);
@@ -143,17 +143,22 @@ public class AppController {
     @RequestMapping("/admin/CreateSchema/{schema}")
     @ResponseBody
     public String createSchema(@PathVariable(name = "schema") String schema) {
-        Connection schemaConnection = null;
-        Session schemaSession = null;
+        Connection schemaConnection;
+        Session schemaSession;
         Transaction schemaTransaction = null;
         System.out.println(schema);
         MultiTenantRegistration.createPublicSchema();
         MultiTenantRegistration.createUserSchema("email@shresthab.com.np", schema);
         try {
+            schemaConnection = MultiTenantRegistration.getConnection(schema);
+            schemaSession = MultiTenantRegistration.getSession(schemaConnection);
+            schemaTransaction = schemaSession.beginTransaction();
             App.setDefaultData(schema, schemaSession, schemaTransaction);
             schemaTransaction.commit();
         } catch (Exception e) {
-            schemaTransaction.rollback();
+            if (schemaTransaction != null) {
+                schemaTransaction.rollback();
+            }
             logger.error("Unable to initialize default data");
             logger.error("Error Occurred: ", e);
         }
@@ -166,8 +171,8 @@ public class AppController {
     @ResponseBody
     @Transactional()
     public String initializeApp() {
-        Connection publicConnection = null;
-        Session publicSession = null;
+        Connection publicConnection;
+        Session publicSession;
         Transaction publicTransaction = null;
         try {
             publicConnection = MultiTenantRegistration.getConnection("public");
@@ -193,8 +198,8 @@ public class AppController {
                 MultiTenantRegistration.createUserSchema("email@shresthab.com.np", surajAppSchema);
                 logger.info("Initializing default data for " + surajAppSchema);
 
-                Connection schemaConnection2 = null;
-                Session schemaSession2 = null;
+                Connection schemaConnection2;
+                Session schemaSession2;
                 Transaction schemaTransaction2 = null;
 
                 try {
@@ -225,13 +230,17 @@ public class AppController {
                     schemaTransaction2.commit();
                 } catch (Exception e) {
                     logger.error("Error Occurred while adding default data to " + surajAppSchema, e);
-                    schemaTransaction2.rollback();
+                    if (schemaTransaction2 != null) {
+                        schemaTransaction2.rollback();
+                    }
                 }
             }
             publicTransaction.commit();
             logger.info("Default public data created");
         } catch (Exception e) {
-            publicTransaction.rollback();
+            if (publicTransaction != null) {
+                publicTransaction.rollback();
+            }
             logger.error("Unable to initialize default data");
             logger.error("Error Occurred: ", e);
         }
