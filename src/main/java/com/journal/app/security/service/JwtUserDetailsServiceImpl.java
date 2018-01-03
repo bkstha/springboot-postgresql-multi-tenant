@@ -34,44 +34,44 @@ public class JwtUserDetailsServiceImpl implements UserDetailsService {
         if (user == null) {
             throw new UsernameNotFoundException(String.format("No user found with username '%s'.", username));
         } else {
+            return JwtUserFactory.create(user);
 //            return JwtUserFactory.create(user);
-//            return JwtUserFactory.create(user);
-            return new UserDetails() {
-                @Override
-                public Collection<? extends GrantedAuthority> getAuthorities() {
-                    return null;
-                }
-
-                @Override
-                public String getPassword() {
-                    return null;
-                }
-
-                @Override
-                public String getUsername() {
-                    return null;
-                }
-
-                @Override
-                public boolean isAccountNonExpired() {
-                    return false;
-                }
-
-                @Override
-                public boolean isAccountNonLocked() {
-                    return false;
-                }
-
-                @Override
-                public boolean isCredentialsNonExpired() {
-                    return false;
-                }
-
-                @Override
-                public boolean isEnabled() {
-                    return false;
-                }
-            };
+//            return new UserDetails() {
+//                @Override
+//                public Collection<? extends GrantedAuthority> getAuthorities() {
+//                    return null;
+//                }
+//
+//                @Override
+//                public String getPassword() {
+//                    return null;
+//                }
+//
+//                @Override
+//                public String getUsername() {
+//                    return null;
+//                }
+//
+//                @Override
+//                public boolean isAccountNonExpired() {
+//                    return false;
+//                }
+//
+//                @Override
+//                public boolean isAccountNonLocked() {
+//                    return false;
+//                }
+//
+//                @Override
+//                public boolean isCredentialsNonExpired() {
+//                    return false;
+//                }
+//
+//                @Override
+//                public boolean isEnabled() {
+//                    return false;
+//                }
+//            };
         }
     }
 //

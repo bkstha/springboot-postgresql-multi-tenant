@@ -8,11 +8,13 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class UserCompanyService {
 
-//    @Autowired
-//    private UserCompanyRepository userCompanyRepository;
+    @Autowired
+    private UserCompanyRepository userCompanyRepository;
 
 
 //    public UserDetails loadUserByUserIdAndCompanyId(long userId, long companyId) throws UsernameNotFoundException {
@@ -24,5 +26,9 @@ public class UserCompanyService {
 //            return JwtUserFactory.create(user);
 //        }
 //    }
+
+    public List<UserCompany> findByUserId(Long userId) {
+        return userCompanyRepository.findByUserId(userId);
+    }
 
 }

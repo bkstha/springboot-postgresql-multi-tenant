@@ -164,7 +164,6 @@ public class Company extends AbstractModel {
     @OneToMany(mappedBy = "company")
     private List<UserCompany> userCompanyList;
 
-
     @OneToMany(mappedBy = "company")
     private List<FiscalYear> fiscalYearList;
 

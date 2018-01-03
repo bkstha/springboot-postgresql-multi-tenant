@@ -6,8 +6,12 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.util.List;
+
 public interface UserCompanyRepository extends JpaRepository<UserCompany, Long> {
 
     @Query("select u from UserCompany u where u.user.id = :userId and u.company.id=:companyId")
     UserCompany findByUserIdAndCompanyId(@Param("userId") Long userId, @Param("companyId") Long companyId);
+
+    List<UserCompany> findByUserId(Long userId);
 }

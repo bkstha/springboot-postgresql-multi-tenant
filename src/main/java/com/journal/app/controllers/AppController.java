@@ -4,6 +4,7 @@ package com.journal.app.controllers;
 import com.journal.app.database.MultiTenantRegistration;
 import com.journal.app.models.DTO.UserDTO;
 import com.journal.app.models.DTO.auth.LoginResponseDTO;
+import com.journal.app.models.DTO.auth.UserCompanyResponseDTO;
 import com.journal.app.models.domain.Authority;
 import com.journal.app.models.domain.Company;
 import com.journal.app.models.domain.User;
@@ -12,6 +13,7 @@ import com.journal.app.models.enums.CalendarType;
 import com.journal.app.models.enums.Gender;
 import com.journal.app.models.enums.InvoiceType;
 import com.journal.app.models.enums.UserRole;
+import com.journal.app.models.services.UserCompanyService;
 import com.journal.app.models.services.UserService;
 import com.journal.app.security.JwtAuthenticationRequest;
 import com.journal.app.security.JwtTokenUtil;
@@ -47,17 +49,19 @@ public class AppController {
 
     private static final Logger logger = LogManager.getLogger(AppController.class);
 
-    @Autowired
-    private AuthenticationManager authenticationManager;
+//    @Autowired
+//    private AuthenticationManager authenticationManager;
 
     @Autowired
     private JwtTokenUtil jwtTokenUtil;
 
     @Autowired
     private UserService userService;
+//    @Autowired
+//    private UserCompanyService userCompanyService;
 
-    @Autowired
-    private UserDetailsService userDetailsService;
+//    @Autowired
+//    private UserDetailsService userDetailsService;
 
     @Value("${app.crypto.salt}")
     private String salt;
@@ -123,20 +127,31 @@ public class AppController {
         if (user.getUserCompanyList().size() == 1) {
             UserCompany userCompany = user.getUserCompanyList().get(0);
             List<Authority> authorities = userCompany.getAuthorities();
+
             response.setSchema(userCompany.getCompany().getSchema());
+            response.setCompanyName(userCompany.getCompany().getName());
             response.setUcid(userCompany.getId());
+
+            List<String> roles = new ArrayList<>();
+
             authorities.forEach((authority) -> {
                 System.out.println("user roles: " + authority.getRole());
                 if (authority.getRole().equals(UserRole.A) || authority.getRole().equals(UserRole.AA) || authority.getRole().equals(UserRole.Z)) {
                     response.setToCompanyList(true);
                 }
+                roles.add(authority.getRole().name());
             });
+
+            if (roles.size() > 0) {
+                response.setRoles(roles);
+            }
+
         } else {
             response.setToCompanyList(true);
         }
         response.setEmail(user.getEmail());
         response.setUsername(user.getUsername());
-        response.setToken(jwtTokenUtil.generateToken(jwtAuthenticationRequest.getUsername(), device));
+        response.setToken(jwtTokenUtil.generateToken(user.getUsername(), device));
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
@@ -263,6 +278,23 @@ public class AppController {
     public User addUser(@RequestBody User user, @PathVariable(value = "id") Long userId) {
         userService.updateUser(user);
         return user;
+    }
+
+    @RequestMapping(method = RequestMethod.GET, value = "/users/{id}/companies")
+    @ResponseBody
+    public Long getCompanyList(@PathVariable(value = "id") Long userId) {
+        System.out.println("at company list controller method");
+//        List<UserCompanyResponseDTO> userCompanyResponseDTOList = new ArrayList<>();
+//        userCompanyService.findByUserId(userId).forEach((data)->{
+//            UserCompanyResponseDTO userCompany= new UserCompanyResponseDTO();
+//            System.out.println(data.getCompany().getSchema());
+//            System.out.println(data.getCompany().getName());
+//            System.out.println(data.getCompany().getId());
+//            System.out.println(data.getDateType().name());
+//            System.out.println(data.getStatus());
+//            System.out.println(data.getEnabled());
+//        });
+        return userId;
     }
 
     @RequestMapping(method = RequestMethod.DELETE, value = "/users/{id}")

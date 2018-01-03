@@ -1,5 +1,8 @@
 package com.journal.app.models.DTO.auth;
 
+import com.journal.app.models.DTO.CompanyDTO;
+import com.journal.app.models.domain.Authority;
+
 import java.util.List;
 
 public class LoginResponseDTO {
@@ -18,10 +21,29 @@ public class LoginResponseDTO {
 
     private Boolean toCompanyList = false;
 
-    private String schema;
+    private List<String> roles;
+
+    private CompanyDTO company;
 
 
     //getter-setter
+
+
+    public CompanyDTO getCompany() {
+        return company;
+    }
+
+    public void setCompany(CompanyDTO company) {
+        this.company = company;
+    }
+
+    public List<String> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(List<String> roles) {
+        this.roles = roles;
+    }
 
     public Long getUid() {
         return uid;
@@ -79,11 +101,5 @@ public class LoginResponseDTO {
         this.toCompanyList = toCompanyList;
     }
 
-    public String getSchema() {
-        return schema;
-    }
-
-    public void setSchema(String schema) {
-        this.schema = schema;
-    }
 }
+

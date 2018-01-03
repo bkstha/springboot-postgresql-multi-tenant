@@ -12,14 +12,14 @@ import java.util.List;
 
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
-    public List<User> findByName(String name);
+    List<User> findByName(String name);
 
-    public List<User> findByEmail(String email);
+    List<User> findByEmail(String email);
 
-    public User findByUsername(String email);
+    User findByUsername(String email);
 
-    public List<User> findByCountryId(Long countryId);
+    List<User> findByCountryId(Long countryId);
 
     @Query("select u from User u where (lower(u.username) = :username or lower(u.email)= :username) and u.password=:password")
-    public User findByUserAndPassword(@Param("username") String username, @Param("password") String password);
+    User findByUserAndPassword(@Param("username") String username, @Param("password") String password);
 }
