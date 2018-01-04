@@ -13,114 +13,26 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
+import java.util.List;
 
 /**
  * Created by stephan on 20.03.16.
  */
 @Service
-public class JwtUserDetailsServiceImpl implements UserDetailsService {
+public class JwtUserDetailsServiceImpl {
 
     @Autowired
     private UserRepository userRepository;
 
-//    @Autowired
-//    private UserCompanyRepository userCompanyRepository;
 
-    @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+    public UserDetails loadUserByUsername(String username, List<String> roles) throws UsernameNotFoundException {
+        System.out.println("get user from database on api call");
         User user = userRepository.findByUsername(username);
-//        UserCompany user = userCompanyRepository.findOne(Long.parseLong(username));
-
         if (user == null) {
             throw new UsernameNotFoundException(String.format("No user found with username '%s'.", username));
         } else {
-            return JwtUserFactory.create(user);
-//            return JwtUserFactory.create(user);
-//            return new UserDetails() {
-//                @Override
-//                public Collection<? extends GrantedAuthority> getAuthorities() {
-//                    return null;
-//                }
-//
-//                @Override
-//                public String getPassword() {
-//                    return null;
-//                }
-//
-//                @Override
-//                public String getUsername() {
-//                    return null;
-//                }
-//
-//                @Override
-//                public boolean isAccountNonExpired() {
-//                    return false;
-//                }
-//
-//                @Override
-//                public boolean isAccountNonLocked() {
-//                    return false;
-//                }
-//
-//                @Override
-//                public boolean isCredentialsNonExpired() {
-//                    return false;
-//                }
-//
-//                @Override
-//                public boolean isEnabled() {
-//                    return false;
-//                }
-//            };
+            return JwtUserFactory.create(user, roles);
         }
     }
-//
-//    @Override
-//    public UserDetails loadUserByUsername(String username, String oneMore) throws UsernameNotFoundException {
-//        User user = userRepository.findByUsername(username);
-////        UserCompany user = userCompanyRepository.findOne(Long.parseLong(username));
-//
-//        if (user == null) {
-//            throw new UsernameNotFoundException(String.format("No user found with username '%s'.", username));
-//        } else {
-////            return JwtUserFactory.create(user);
-////            return JwtUserFactory.create(user);
-//            return new UserDetails() {
-//                @Override
-//                public Collection<? extends GrantedAuthority> getAuthorities() {
-//                    return null;
-//                }
-//
-//                @Override
-//                public String getPassword() {
-//                    return null;
-//                }
-//
-//                @Override
-//                public String getUsername() {
-//                    return null;
-//                }
-//
-//                @Override
-//                public boolean isAccountNonExpired() {
-//                    return false;
-//                }
-//
-//                @Override
-//                public boolean isAccountNonLocked() {
-//                    return false;
-//                }
-//
-//                @Override
-//                public boolean isCredentialsNonExpired() {
-//                    return false;
-//                }
-//
-//                @Override
-//                public boolean isEnabled() {
-//                    return false;
-//                }
-//            };
-//        }
-//    }
+
 }

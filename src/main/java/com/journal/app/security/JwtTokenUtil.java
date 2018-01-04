@@ -1,11 +1,12 @@
 package com.journal.app.security;
 
 
-import com.journal.app.models.DTO.auth.UserDetailDTO;
 import com.journal.app.utils.TimeProvider;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mobile.device.Device;
@@ -13,15 +14,14 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 import java.io.Serializable;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 import java.util.function.Function;
 
 @Component
 public class JwtTokenUtil implements Serializable {
 
     private static final long serialVersionUID = -3301605591108950415L;
+    private static final Logger logger = LogManager.getLogger(JwtTokenUtil.class);
 
     static final String CLAIM_KEY_USERNAME = "sub";
     static final String CLAIM_KEY_AUDIENCE = "aud";
@@ -41,8 +41,24 @@ public class JwtTokenUtil implements Serializable {
     @Value("${jwt.expiration}")
     private Long expiration;
 
+    private static List<String> getRoles(Claims c) {
+        return (List<String>) c.get("roles");
+    }
+
+    private static String getSchema(Claims c) {
+        return c.get("schema").toString();
+    }
+
     public String getUsernameFromToken(String token) {
         return getClaimFromToken(token, Claims::getSubject);
+    }
+
+    public List<String> getRolesFromToken(String token) {
+        return getClaimFromToken(token, JwtTokenUtil::getRoles);
+    }
+
+    public String getSchemaFromToken(String token) {
+        return getClaimFromToken(token, JwtTokenUtil::getSchema);
     }
 
     public Date getIssuedAtDateFromToken(String token) {
@@ -97,19 +113,30 @@ public class JwtTokenUtil implements Serializable {
 
     public String generateToken(UserDetails userDetails, Device device) {
         Map<String, Object> claims = new HashMap<>();
-        return doGenerateToken(claims, userDetails.getUsername(), generateAudience(device));
-    }
-    public String generateToken(String username, Device device) {
-        Map<String, Object> claims = new HashMap<>();
-        return doGenerateToken(claims, username, generateAudience(device));
+        return doGenerateToken(claims, userDetails.getUsername(), generateAudience(device), null, null);
     }
 
-    private String doGenerateToken(Map<String, Object> claims, String subject, String audience) {
+    public String generateToken(String username, Device device) {
+        Map<String, Object> claims = new HashMap<>();
+        return doGenerateToken(claims, username, generateAudience(device), null, null);
+    }
+
+    public String generateToken(String username, String schema, List<String> roles, Device device) {
+        Map<String, Object> claims = new HashMap<>();
+        return doGenerateToken(claims, username, generateAudience(device), schema, roles);
+    }
+
+    private String doGenerateToken(Map<String, Object> claims, String subject, String audience, String schema, List<String> roles) {
         final Date createdDate = timeProvider.now();
         final Date expirationDate = calculateExpirationDate(createdDate);
 
-        System.out.println("doGenerateToken " + createdDate);
-
+        logger.info("doGenerateToken " + createdDate);
+        if (roles != null && roles.size() > 0) {
+            claims.put("roles", roles);
+        }
+        if (schema != null && schema.toLowerCase().trim().length() > 0) {
+            claims.put("schema", schema);
+        }
         return Jwts.builder()
                 .setClaims(claims)
                 .setSubject(subject)
@@ -146,9 +173,9 @@ public class JwtTokenUtil implements Serializable {
         final Date created = getIssuedAtDateFromToken(token);
 //        final Date expiration = getExpirationDateFromToken(token);
         return (
-              username.equals(user.getUsername())
-                    && !isTokenExpired(token)
-                    && !isCreatedBeforeLastPasswordReset(created, user.getLastPasswordResetDate())
+                username.equals(user.getUsername())
+                        && !isTokenExpired(token)
+                        && !isCreatedBeforeLastPasswordReset(created, user.getLastPasswordResetDate())
         );
     }
 

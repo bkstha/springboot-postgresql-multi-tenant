@@ -2,6 +2,7 @@ package com.journal.app.controllers;
 
 
 import com.journal.app.database.MultiTenantRegistration;
+import com.journal.app.models.DTO.CompanyDTO;
 import com.journal.app.models.DTO.UserDTO;
 import com.journal.app.models.DTO.auth.LoginResponseDTO;
 import com.journal.app.models.DTO.auth.UserCompanyResponseDTO;
@@ -99,7 +100,7 @@ public class AppController {
 //        System.out.println("token: "+token);
 //         Return the token
 //        return new JwtAuthenticationResponse(token).toString();
-        return "hehea";
+        return userAuthToken;
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "/login")
@@ -124,12 +125,13 @@ public class AppController {
             return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
         }
         response.setUid(user.getId());
+        response.setToken(jwtTokenUtil.generateToken(user.getUsername(), device));
         if (user.getUserCompanyList().size() == 1) {
             UserCompany userCompany = user.getUserCompanyList().get(0);
             List<Authority> authorities = userCompany.getAuthorities();
+            CompanyDTO companyDTO = new CompanyDTO(userCompany.getCompany().getSchema(), userCompany.getCompany().getName());
 
-            response.setSchema(userCompany.getCompany().getSchema());
-            response.setCompanyName(userCompany.getCompany().getName());
+            response.setCompany(companyDTO);
             response.setUcid(userCompany.getId());
 
             List<String> roles = new ArrayList<>();
@@ -143,15 +145,14 @@ public class AppController {
             });
 
             if (roles.size() > 0) {
-                response.setRoles(roles);
+                response.setToken(jwtTokenUtil.generateToken(user.getUsername(), companyDTO.getSchema(), roles, device));
             }
-
         } else {
             response.setToCompanyList(true);
         }
         response.setEmail(user.getEmail());
         response.setUsername(user.getUsername());
-        response.setToken(jwtTokenUtil.generateToken(user.getUsername(), device));
+
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 

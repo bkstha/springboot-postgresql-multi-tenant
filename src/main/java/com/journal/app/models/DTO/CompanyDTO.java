@@ -4,6 +4,11 @@ public class CompanyDTO {
     private String name;
     private String schema;
 
+    public CompanyDTO(String name, String schema) {
+        this.name = name;
+        this.schema = schema;
+    }
+
     //getter-setter
 
     public String getName() {

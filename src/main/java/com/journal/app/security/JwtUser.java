@@ -13,70 +13,33 @@ import java.util.Date;
 public class JwtUser implements UserDetails {
 
     private final Long id;
-    //    private final Long ucid;
     private final String username;
     private final String name;
     private final String password;
     private final String email;
-    //    private final String schema;
-//    private final Collection<? extends GrantedAuthority> authorities;
+    private final Collection<? extends GrantedAuthority> authorities;
     private final boolean enabled;
     private final Date lastPasswordResetDate;
 
     public JwtUser(
             Long id,
-//          Long ucid,
             String username,
             String name,
             String email,
             String password,
-//          String schema,
-//          Collection<? extends GrantedAuthority> authorities,
             boolean enabled,
-            Date lastPasswordResetDate
+            Date lastPasswordResetDate,
+            Collection<? extends GrantedAuthority> authorities
     ) {
         this.id = id;
-//        this.ucid = ucid;
         this.username = username;
         this.name = name;
         this.email = email;
         this.password = password;
-//        this.schema = schema;
-//        this.authorities = authorities;
+        this.authorities = authorities;
         this.enabled = enabled;
         this.lastPasswordResetDate = lastPasswordResetDate;
     }
-
-//    public JwtUser(
-//          Long id,
-//          Long ucid,
-//          String username,
-//          String name,
-//          String email,
-//          String password,
-//          String schema,
-//          Collection<? extends GrantedAuthority> authorities,
-//          boolean enabled,
-//          Date lastPasswordResetDate
-//    ) {
-//        this.id = id;
-//        this.username = username;
-//        this.name=name;
-//        this.email = email;
-//        this.password = password;
-//        this.enabled = enabled;
-//        this.lastPasswordResetDate = lastPasswordResetDate;
-//    }
-
-
-//
-//    public Long getUcid() {
-//        return ucid;
-//    }
-//
-//    public String getSchema() {
-//        return schema;
-//    }
 
     @JsonIgnore
     public Long getId() {
@@ -136,4 +99,6 @@ public class JwtUser implements UserDetails {
     public Date getLastPasswordResetDate() {
         return lastPasswordResetDate;
     }
+
+
 }
