@@ -19,7 +19,7 @@ import java.util.List;
  * Created by stephan on 20.03.16.
  */
 @Service
-public class JwtUserDetailsServiceImpl {
+public class JwtUserDetailsServiceImpl implements UserDetailsService{
 
     @Autowired
     private UserRepository userRepository;
@@ -35,4 +35,13 @@ public class JwtUserDetailsServiceImpl {
         }
     }
 
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        User user = userRepository.findByUsername(username);
+        if (user == null) {
+            throw new UsernameNotFoundException(String.format("No user found with username '%s'.", username));
+        } else {
+            return JwtUserFactory.create(user);
+        }
+    }
 }

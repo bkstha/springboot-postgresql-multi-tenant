@@ -1,6 +1,5 @@
 package com.journal.app.controllers;
 
-import com.journal.app.database.MultiTenantRegistration;
 import com.journal.app.models.domain.AccountGroup;
 import com.journal.app.models.domain.UniqueId;
 import com.journal.app.models.enums.ACCOUNT;

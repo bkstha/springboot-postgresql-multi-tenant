@@ -26,8 +26,8 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
 
     private final Log logger = LogFactory.getLog(this.getClass());
 
-//    @Autowired
-//    private UserDetailsService userDetailsService;
+    @Autowired
+    private UserDetailsService userDetailsService;
 
     @Autowired
     private JwtTokenUtil jwtTokenUtil;
@@ -44,11 +44,17 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
         if (authToken != null && App.trim(authToken).length() > 0) {
             try {
                 username = jwtTokenUtil.getUsernameFromToken(authToken);
-                roles = jwtTokenUtil.getRolesFromToken(authToken);
             } catch (IllegalArgumentException e) {
                 logger.error("an error occurred during getting username from token", e);
             } catch (ExpiredJwtException e) {
-                logger.warn("the token is expired and not valid anymore", e);
+                logger.warn("the token is expired and not valid anymore");
+            }
+            try {
+                roles = jwtTokenUtil.getRolesFromToken(authToken);
+            } catch (IllegalArgumentException e) {
+                logger.error("an error occurred during getting user role from token", e);
+            } catch (ExpiredJwtException e) {
+                logger.warn("the token is expired and not valid anymore");
             }
         } else {
             logger.warn("couldn't find auth token string, will ignore the header");
@@ -59,7 +65,12 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
 
             // It is not compelling necessary to load the use details from the database. You could also store the information
             // in the token and read it from it. It's up to you ;)
-            UserDetails userDetails = new JwtUserDetailsServiceImpl().loadUserByUsername(username, roles);
+            UserDetails userDetails;
+            if (roles != null && roles.size() > 0) {
+                userDetails = new JwtUserDetailsServiceImpl().loadUserByUsername(username, roles);
+            } else {
+                userDetails = this.userDetailsService.loadUserByUsername(username);
+            }
 
             // For simple validation it is completely sufficient to just check the token integrity. You don't have to call
             // the database compellingly. Again it's up to you ;)
