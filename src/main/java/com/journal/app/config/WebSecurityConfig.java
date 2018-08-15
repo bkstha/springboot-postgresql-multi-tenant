@@ -15,7 +15,6 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 
 @SuppressWarnings("SpringJavaAutowiringInspection")
 @Configuration
@@ -47,6 +46,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         return new JwtAuthenticationTokenFilter();
     }
 
+    private final String[] publicUrls = {"/", "/login", "/sign-up", "/CreateToken", "/company-list", "/InitializeApp"};
+
     @Override
     protected void configure(HttpSecurity httpSecurity) throws Exception {
         httpSecurity
@@ -64,7 +65,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 //.antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
 
                 // allow anonymous resource requests
-                .antMatchers("/", "/login", "/sign-up", "/CreateToken", "/company-list", "/InitializeApp")
+                .antMatchers(publicUrls)
                 .permitAll()
                 .antMatchers("/auth/**").permitAll()
                 .anyRequest().authenticated();

@@ -9,3 +9,6 @@
 .idea/modules.xml
 .idea/workspace.xml
 journal.iml
+logs/
+target/
+.idea/sonarlint/
