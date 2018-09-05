@@ -42,7 +42,7 @@ public class User extends AbstractModel {
     @Enumerated(EnumType.STRING)
     private UserDate userDate= UserDate.INT;
 
-    @Column(name = "email")
+    @Column(name = "email", length = 70)
     private String email;
 
     @Column(name = "contact_number", length = 15)

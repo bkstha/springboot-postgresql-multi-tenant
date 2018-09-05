@@ -45,7 +45,7 @@ public class JwtTokenUtil implements Serializable {
         return (List<String>) c.get("roles");
     }
 
-    private static String getSchema(Claims c) {
+    public static String getSchema(Claims c) {
         return c.get("schema").toString();
     }
 
@@ -78,7 +78,7 @@ public class JwtTokenUtil implements Serializable {
         return claimsResolver.apply(claims);
     }
 
-    private Claims getAllClaimsFromToken(String token) {
+    public Claims getAllClaimsFromToken(String token) {
         return Jwts.parser()
                 .setSigningKey(secret)
                 .parseClaimsJws(token)

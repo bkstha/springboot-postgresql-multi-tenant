@@ -103,59 +103,6 @@ public class AppController {
         return userAuthToken;
     }
 
-    @RequestMapping(method = RequestMethod.POST, value = "/login")
-    @ResponseBody
-    public ResponseEntity<LoginResponseDTO> login(@RequestBody JwtAuthenticationRequest jwtAuthenticationRequest, Device device) {
-
-        System.out.println(jwtAuthenticationRequest);
-        System.out.println("device");
-        System.out.println(device);
-
-        LoginResponseDTO response = new LoginResponseDTO();
-        List<String> errors = new ArrayList<>();
-        System.out.println(jwtAuthenticationRequest.getUsername());
-        System.out.println(jwtAuthenticationRequest.getPassword());
-        System.out.println(BCrypt.hashpw(jwtAuthenticationRequest.getPassword(), salt));
-        User user = userService.findByUserAndPassword(jwtAuthenticationRequest.getUsername(), BCrypt.hashpw(jwtAuthenticationRequest.getPassword(), salt));
-        if (user == null) {
-            logger.error("Unable to find user");
-            errors.clear();
-            errors.add("Invalid username or password");
-            response.setErrors(errors);
-            return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
-        }
-        response.setUid(user.getId());
-        response.setToken(jwtTokenUtil.generateToken(user.getUsername(), device));
-        if (user.getUserCompanyList().size() == 1) {
-            UserCompany userCompany = user.getUserCompanyList().get(0);
-            List<Authority> authorities = userCompany.getAuthorities();
-            CompanyDTO companyDTO = new CompanyDTO(userCompany.getCompany().getSchema(), userCompany.getCompany().getName());
-
-            response.setCompany(companyDTO);
-            response.setUcid(userCompany.getId());
-
-            List<String> roles = new ArrayList<>();
-
-            authorities.forEach((authority) -> {
-                System.out.println("user roles: " + authority.getRole());
-                if (authority.getRole().equals(UserRole.A) || authority.getRole().equals(UserRole.AA) || authority.getRole().equals(UserRole.Z)) {
-                    response.setToCompanyList(true);
-                }
-                roles.add(authority.getRole().name());
-            });
-
-            if (roles.size() > 0) {
-                response.setToken(jwtTokenUtil.generateToken(user.getUsername(), companyDTO.getSchema(), roles, device));
-            }
-        } else {
-            response.setToCompanyList(true);
-        }
-        response.setEmail(user.getEmail());
-        response.setUsername(user.getUsername());
-
-        return new ResponseEntity<>(response, HttpStatus.OK);
-    }
-
     @RequestMapping("/admin/CreateSchema/{schema}")
     @ResponseBody
     public String createSchema(@PathVariable(name = "schema") String schema) {
@@ -263,45 +210,6 @@ public class AppController {
         return "Default Data Created";
     }
 
-
-    @RequestMapping("/users/{id}")
-    public User getUser(@PathVariable Long id) {
-        return userService.getUser(id);
-    }
-
-    @RequestMapping(method = RequestMethod.POST, value = "/users")
-    public UserDTO addUser(@RequestBody UserDTO user) {
-        userService.addUser(user);
-        return user;
-    }
-
-    @RequestMapping(method = RequestMethod.PUT, value = "/users/{id}")
-    public User addUser(@RequestBody User user, @PathVariable(value = "id") Long userId) {
-        userService.updateUser(user);
-        return user;
-    }
-
-    @RequestMapping(method = RequestMethod.GET, value = "/users/{id}/companies")
-    @ResponseBody
-    public Long getCompanyList(@PathVariable(value = "id") Long userId) {
-        System.out.println("at company list controller method");
-//        List<UserCompanyResponseDTO> userCompanyResponseDTOList = new ArrayList<>();
-//        userCompanyService.findByUserId(userId).forEach((data)->{
-//            UserCompanyResponseDTO userCompany= new UserCompanyResponseDTO();
-//            System.out.println(data.getCompany().getSchema());
-//            System.out.println(data.getCompany().getName());
-//            System.out.println(data.getCompany().getId());
-//            System.out.println(data.getDateType().name());
-//            System.out.println(data.getStatus());
-//            System.out.println(data.getEnabled());
-//        });
-        return userId;
-    }
-
-    @RequestMapping(method = RequestMethod.DELETE, value = "/users/{id}")
-    public void addUser(@PathVariable Long id) {
-        userService.deleteUser(id);
-    }
 
 
 }

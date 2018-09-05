@@ -46,7 +46,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         return new JwtAuthenticationTokenFilter();
     }
 
-    private final String[] publicUrls = {"/", "/login", "/sign-up", "/CreateToken", "/company-list", "/InitializeApp"};
+    private final String[] publicUrls = {"/", "/login", "/register", "/CreateToken", "/company-list", "/InitializeApp"};
 
     @Override
     protected void configure(HttpSecurity httpSecurity) throws Exception {

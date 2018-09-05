@@ -131,9 +131,11 @@ public class MultiTenantRegistration implements ServiceRegistryAwareService, Int
         try (Connection connection = multiTenantConnectionProvider.getConnection(schema);
              Statement statement = connection.createStatement()) {
             logger.info("deleting tables for schema: " + schema);
-            ResultSet rs = statement.executeQuery("SELECT EXISTS(SELECT 1 FROM pg_namespace WHERE nspname = '" + schema + "') as schema_exists");
-            rs.next();
-            boolean schemaExists = rs.getBoolean("schema_exists");
+            boolean schemaExists;
+            try (ResultSet rs = statement.executeQuery("SELECT EXISTS(SELECT 1 FROM pg_namespace WHERE nspname = '" + schema + "') as schema_exists")) {
+                rs.next();
+                schemaExists = rs.getBoolean("schema_exists");
+            }
             if (!MultiTenantConfiguration.isPublicSchema(schema) && schema.equals(connection.getSchema()) && !connection.getSchema().equals("public")) {
                 if (schemaExists) {
                     for (String sharedTable : MultiTenantConfiguration.getSharedTablesList()) {
