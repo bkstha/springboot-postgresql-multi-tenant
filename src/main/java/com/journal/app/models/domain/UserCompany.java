@@ -32,7 +32,7 @@ public class UserCompany extends AbstractModel {
     @JoinColumn(name = "company_id", nullable = false, foreignKey = @ForeignKey(name = "fk_company_id"))
     private Company company;
 
-    // if user is active or blocked
+    // if user is active or blocked for this company
     @Column(name = "status", nullable = false)
     private Boolean status;
 

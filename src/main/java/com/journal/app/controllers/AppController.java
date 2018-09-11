@@ -16,6 +16,7 @@ import com.journal.app.models.enums.InvoiceType;
 import com.journal.app.models.enums.UserRole;
 import com.journal.app.models.services.UserCompanyService;
 import com.journal.app.models.services.UserService;
+import com.journal.app.models.services.impl.UserServiceImpl;
 import com.journal.app.security.JwtAuthenticationRequest;
 import com.journal.app.security.JwtTokenUtil;
 import com.journal.app.security.service.JwtAuthenticationResponse;
@@ -143,7 +144,7 @@ public class AppController {
             publicTransaction = publicSession.beginTransaction();
             App.setDefaultData("public", publicSession, publicTransaction);
 
-            if (UserService.isTableEmpty(publicSession)) {
+            if (UserServiceImpl.isTableEmpty(publicSession)) {
                 logger.info("Inserting default User...");
                 User user = new User();
                 user.setUsername("admin");

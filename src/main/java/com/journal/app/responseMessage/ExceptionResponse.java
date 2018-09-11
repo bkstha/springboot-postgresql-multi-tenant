@@ -1,15 +1,15 @@
 package com.journal.app.responseMessage;
 
 public class ExceptionResponse {
-    private String message;
+    private String errorMessage;
     private String callerUrl;
 
-    public String getMessage() {
-        return message;
+    public String getErrorMessage() {
+        return errorMessage;
     }
 
-    public void setMessage(String message) {
-        this.message = message;
+    public void setErrorMessage(String errorMessage) {
+        this.errorMessage = errorMessage;
     }
 
     public String getCallerUrl() {

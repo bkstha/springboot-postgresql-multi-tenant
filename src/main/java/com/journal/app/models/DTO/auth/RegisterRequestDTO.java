@@ -8,6 +8,11 @@ import javax.validation.constraints.Size;
 
 public class RegisterRequestDTO {
 
+    @NotNull(message = "Name is required.")
+    @Size(max = 50, min = 3, message = "Name must be between 3-50 characters.")
+    @NotEmpty(message = "Name is required.")
+    private String name;
+
     @NotNull(message = "Username is required.")
     @Size(max = 20, min = 5, message = "Username must be between 5-20 characters.")
     @NotEmpty(message = "Username is required.")
@@ -61,10 +66,19 @@ public class RegisterRequestDTO {
         this.repeatPassword = repeatPassword;
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
     @Override
     public String toString() {
         return "RegisterRequestDTO{" +
-                "username='" + username + '\'' +
+                "name='" + name + '\'' +
+                ", username='" + username + '\'' +
                 ", email='" + email + '\'' +
                 ", password='" + password + '\'' +
                 ", repeatPassword='" + repeatPassword + '\'' +

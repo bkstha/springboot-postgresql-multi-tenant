@@ -2,6 +2,8 @@ package com.journal.app.models.repositories;
 
 import com.journal.app.models.domain.User;
 import com.journal.app.models.domain.UserCompany;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
@@ -12,11 +14,13 @@ import java.util.List;
 
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
-    List<User> findByName(String name);
 
-    List<User> findByEmail(String email);
+    @Override
+    Page<User> findAll(Pageable pageable);
 
     User findByUsername(String email);
+
+    User findByEmail(String email);
 
     List<User> findByCountryId(Long countryId);
 

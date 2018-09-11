@@ -122,7 +122,7 @@ public class User extends AbstractModel {
     }
 
     public void setUsername(String username) {
-        this.username = username;
+        this.username = username.toLowerCase();
     }
 
     public UserDate getUserDate() {
@@ -138,7 +138,7 @@ public class User extends AbstractModel {
     }
 
     public void setEmail(String email) {
-        this.email = email;
+        this.email = email.toLowerCase();
     }
 
     public String getContactNumber() {

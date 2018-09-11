@@ -1,73 +1,55 @@
 package com.journal.app.models.services;
 
-import com.journal.app.controllers.App;
-import com.journal.app.controllers.AppController;
+import com.journal.app.models.DTO.PageResponseDTO;
 import com.journal.app.models.DTO.UserDTO;
-import com.journal.app.models.domain.User;
-import com.journal.app.models.repositories.UserRepository;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.hibernate.Session;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-import java.util.ArrayList;
-import java.util.List;
+import com.journal.app.models.DTO.auth.RegisterRequestDTO;
+import com.journal.app.models.DTO.users.UserRequestDTO;
+import com.journal.app.models.DTO.users.UserResponseDTO;
 
 
-@Service
-public class UserService {
-    private static final Logger logger = LogManager.getLogger(UserService.class);
-    @Autowired
-    private UserRepository userRepository;
 
-    //returns all users
-    public List<User> getAllUsers() {
-        List<User> users = new ArrayList<>();
-        userRepository.findAll().forEach(users::add);
-        return users;
-    }
+public interface UserService {
+//    private static final Logger LOGGER = LogManager.getLogger(UserService.class);
+//    @Autowired
+//    private UserRepository userRepository;
+
+//    //returns all users
+//    public List<User> getAllUsers() {
+//        List<User> users = new ArrayList<>();
+//        userRepository.findAll().forEach(users::add);
+//        return users;
+//    }
+
 
     //add user
-    public void addUser(UserDTO userDTO) {
-        User user = new User();
-        user.setUsername(userDTO.getUsername());
-        user.setPassword(userDTO.getPassword());
+    UserResponseDTO addUser(UserRequestDTO userRequestDTO);
 
-        userRepository.save(user);
-    }
+    //add user from register form
+    UserResponseDTO addUser(RegisterRequestDTO registerRequestDTO);
+
+    //delete user
+    void deleteUser(long id);
 
     //update user
-    public void updateUser(User user) {
-        userRepository.save(user);
-    }
+    UserResponseDTO updateUser(UserRequestDTO userRequestDTO);
 
-    //get user with id
-    public User getUser(Long id) {
-        return userRepository.findOne(id);
-    }
+    //get user
+    UserResponseDTO getUser(long id);
 
-    //delete user with id
-    public void deleteUser(Long id) {
-        userRepository.delete(id);
-    }
+    //get user list
+    PageResponseDTO<UserResponseDTO> getUsers();
 
-    public static boolean isTableEmpty(Session session) {
-        boolean b;
-        Long total = (Long) session
-                .createQuery("select count(c) from User c")
-                .getSingleResult();
-        b = total <= 0;
-        return b;
-    }
+    //get user by username and password
+    UserDTO get(String username, String password);
 
-    public User findByUserAndPassword(String username, String password) {
-//        try {
-        return userRepository.findByUserAndPassword(username, password);
-//        } catch (Exception e) {
-//            logger.warn("no data");
-//            return null;
-//        }
-    }
+    //checks if table empty
+//    Boolean isTableEmpty(Session session);
+
+    UserDTO getByUsername(String username);
+
+    UserDTO getByEmail(String email);
+
+
+
 }
 

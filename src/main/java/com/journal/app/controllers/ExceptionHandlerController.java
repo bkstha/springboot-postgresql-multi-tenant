@@ -1,7 +1,11 @@
 package com.journal.app.controllers;
 
 
+import com.journal.app.exceptions.DataNotFoundException;
 import com.journal.app.exceptions.UserAlreadyExistsException;
+import com.journal.app.exceptions.ValidationException;
+import com.journal.app.responseMessage.DataBindingErrorMessage;
+import com.journal.app.responseMessage.ExceptionResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -14,7 +18,8 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.f1soft.bachaat.utils.MessageConstant.DATA_BINDING_ERROR_MESSAGE;
+import static com.journal.app.utils.MessageConstant.DATA_BINDING_ERROR_MESSAGE;
+
 
 @ControllerAdvice
 public class ExceptionHandlerController {
@@ -22,15 +27,7 @@ public class ExceptionHandlerController {
     @ExceptionHandler(UserAlreadyExistsException.class)
     public ResponseEntity<ExceptionResponse> unAuthorizedException(final UserAlreadyExistsException ex, final HttpServletRequest request) {
         ExceptionResponse error = new ExceptionResponse();
-        error.setMessage(ex.getMessage());
-        error.setCallerUrl(request.getRequestURI());
-        return new ResponseEntity<>(error, HttpStatus.CONFLICT);
-    }
-
-    @ExceptionHandler(MobileNumberInvalidException.class)
-    public ResponseEntity<ExceptionResponse> unAuthorizedException(final MobileNumberInvalidException ex, final HttpServletRequest request) {
-        ExceptionResponse error = new ExceptionResponse();
-        error.setMessage(ex.getMessage());
+        error.setErrorMessage(ex.getMessage());
         error.setCallerUrl(request.getRequestURI());
         return new ResponseEntity<>(error, HttpStatus.CONFLICT);
     }
@@ -60,25 +57,17 @@ public class ExceptionHandlerController {
     }
 
     @ExceptionHandler(DataNotFoundException.class)
-    public ResponseEntity<ExceptionResponse> userNotFoundException(final DataNotFoundException ex, final HttpServletRequest request) {
+    public ResponseEntity<ExceptionResponse> dataNotFoundException(final DataNotFoundException ex, final HttpServletRequest request) {
         ExceptionResponse error = new ExceptionResponse();
-        error.setMessage(ex.getMessage());
+        error.setErrorMessage(ex.getMessage());
         error.setCallerUrl(request.getRequestURI());
         return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
-    }
-
-    @ExceptionHandler(MenuAlreadyExistsException.class)
-    public ResponseEntity<ExceptionResponse> menuAlreadyExistException(final MenuAlreadyExistsException ex, final HttpServletRequest request) {
-        ExceptionResponse error = new ExceptionResponse();
-        error.setMessage(ex.getMessage());
-        error.setCallerUrl(request.getRequestURI());
-        return new ResponseEntity<>(error, HttpStatus.CONFLICT);
     }
 
     @ExceptionHandler(ValidationException.class)
     public ResponseEntity<ExceptionResponse> fieldValidationException(final ValidationException ex, final HttpServletRequest request) {
         ExceptionResponse error = new ExceptionResponse();
-        error.setMessage(ex.getMessage());
+        error.setErrorMessage(ex.getMessage());
         error.setCallerUrl(request.getRequestURI());
         return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
     }
