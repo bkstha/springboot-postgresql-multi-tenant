@@ -15,7 +15,7 @@ import java.util.List;
 public class CORSFilter implements Filter {
 
     private static final Logger logger = LogManager.getLogger(CORSFilter.class);
-    private static final List<String> ALLOWED_ORIGINS = Arrays.asList("http://localhost:4200", "http://localhost:4300");
+    private static final List<String> ALLOWED_ORIGINS = Arrays.asList("http://localhost:4200", "http://localhost:4300", "https://journal-angular.herokuapp.com");
 
     @Override
     public void init(FilterConfig filterConfig) {

@@ -10,11 +10,11 @@ public class LoginResponseDTO {
 
     private UserDTO user;
 
-    private List<String> errors;
+//    private List<String> errors;
 
     private String token;
 
-    private Boolean toCompanyList = false;
+//    private Boolean toCompanyList = false;
 
     //getter-setter
 
@@ -26,13 +26,13 @@ public class LoginResponseDTO {
         this.user = user;
     }
 
-    public List<String> getErrors() {
-        return errors;
-    }
-
-    public void setErrors(List<String> errors) {
-        this.errors = errors;
-    }
+//    public List<String> getErrors() {
+//        return errors;
+//    }
+//
+//    public void setErrors(List<String> errors) {
+//        this.errors = errors;
+//    }
 
     public String getToken() {
         return token;
@@ -42,12 +42,12 @@ public class LoginResponseDTO {
         this.token = token;
     }
 
-    public Boolean getToCompanyList() {
-        return toCompanyList;
-    }
-
-    public void setToCompanyList(Boolean toCompanyList) {
-        this.toCompanyList = toCompanyList;
-    }
+//    public Boolean getToCompanyList() {
+//        return toCompanyList;
+//    }
+//
+//    public void setToCompanyList(Boolean toCompanyList) {
+//        this.toCompanyList = toCompanyList;
+//    }
 }
 

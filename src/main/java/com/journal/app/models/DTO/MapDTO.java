@@ -20,10 +20,6 @@ public class MapDTO {
         userDTO.setGender(user.getGender());
         if (user.getUserCompanyList() != null) {
             List<UsersCompanyDTO> usersCompanyDTOList = new ArrayList<>();
-//            for (UserCompany userCompany : user.getUserCompanyList()) {
-//                usersCompanyDTOList.add(userCompanyToUsersCompanyDTO(userCompany));
-//            }
-
             user.getUserCompanyList().forEach((userCompany -> usersCompanyDTOList.add(userCompanyToUsersCompanyDTO(userCompany))));
             userDTO.setCompanyList(usersCompanyDTOList);
         }

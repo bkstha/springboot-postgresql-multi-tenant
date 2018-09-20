@@ -50,31 +50,31 @@ public class AuthController {
         response.setUser(user);
         response.setToken(jwtTokenUtil.generateToken(user.getUsername(), device));
 
-        if (user.getCompanyList()!= null && user.getCompanyList().size() == 1) {
-//            UsersCompanyDTO usersCompany = user.getCompanyList().get(0);
-//            List<Authority> authorities = usersCompany.getAuthorityList();
-//            CompanyDTO companyDTO = new CompanyDTO(userCompany.getSchema(), userCompany.getName());
-
-//            response.setUsersCompany(usersCompany);
-//            response.setUsersCompany(companyDTO);
-//            response.setUcid(userCompany.getUcId());
-
-            List<String> roles = new ArrayList<>();
-//            user.getCompanyList().get
+//        if (user.getCompanyList()!= null && user.getCompanyList().size() == 1) {
+////            UsersCompanyDTO usersCompany = user.getCompanyList().get(0);
+////            List<Authority> authorities = usersCompany.getAuthorityList();
+////            CompanyDTO companyDTO = new CompanyDTO(userCompany.getSchema(), userCompany.getName());
 //
-//            authorities.forEach((authority) -> {
-//                if (authority.getRole().equals(UserRole.A) || authority.getRole().equals(UserRole.AA) || authority.getRole().equals(UserRole.Z)) {
-//                    response.setToCompanyList(true);
-//                }
-//                roles.add(authority.getRole().name());
-//            });
-
-            if (!response.getToCompanyList() && roles.size() > 0) {
-                response.setToken(jwtTokenUtil.generateToken(user.getUsername(), user.getCompanyList().get(0).getSchema(), roles, device));
-            }
-        } else {
-            response.setToCompanyList(true);
-        }
+////            response.setUsersCompany(usersCompany);
+////            response.setUsersCompany(companyDTO);
+////            response.setUcid(userCompany.getUcId());
+//
+//            List<String> roles = new ArrayList<>();
+////            user.getCompanyList().get
+////
+////            authorities.forEach((authority) -> {
+////                if (authority.getRole().equals(UserRole.A) || authority.getRole().equals(UserRole.AA) || authority.getRole().equals(UserRole.Z)) {
+////                    response.setToCompanyList(true);
+////                }
+////                roles.add(authority.getRole().name());
+////            });
+//
+//            if (!response.getToCompanyList() && roles.size() > 0) {
+//                response.setToken(jwtTokenUtil.generateToken(user.getUsername(), user.getCompanyList().get(0).getSchema(), roles, device));
+//            }
+//        } else {
+//            response.setToCompanyList(true);
+//        }
 //        response.setEmail(user.getEmail());
 //        response.setUsername(user.getUsername());
 
