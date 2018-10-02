@@ -31,23 +31,19 @@ public class CurrentTenantIdentifierResolverImpl implements CurrentTenantIdentif
     public String resolveCurrentTenantIdentifier() {
         try {
             HttpServletRequest httpServletRequest = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
-            String userToken = httpServletRequest.getHeader("token");
-            String userSchema = jwtTokenUtil.getSchemaFromToken(userToken);
+            String userToken = httpServletRequest.getHeader("auth_token");
+            String userSchema = httpServletRequest.getHeader("schema");
+//            String userSchema = jwtTokenUtil.getSchemaFromToken(userToken);
 
             if (userToken == null || userToken == null) {
                 logger.info("resolveCurrentTenantIdentifier to public (user=" + PUBLIC + ")");
                 return PUBLIC;
             } else {
-//                JwtTokenUtil token = new JwtTokenUtil();
-//                token.getAllClaimsFromToken
-
-//                userSchema = JwtTokenUtil.getSchema(new JwtTokenUtil().getAllClaimsFromToken(userToken));
-
                 logger.info("resolveCurrentTenantIdentifier to " + userSchema + "");
                 return userSchema;
             }
         } catch (Exception e) {
-            logger.error("cannot resolve current tenant identifier. Initializing Default tenant(user=" + PUBLIC + ")");
+            logger.error("cannot resolve current tenant identifier. Initializing Default tenant(user=" + PUBLIC + ")", e);
             return PUBLIC;
         }
     }

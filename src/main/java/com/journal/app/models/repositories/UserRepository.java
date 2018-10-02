@@ -18,6 +18,8 @@ public interface UserRepository extends JpaRepository<User, Long> {
     @Override
     Page<User> findAll(Pageable pageable);
 
+    User findById(Long id);
+
     User findByUsername(String email);
 
     User findByEmail(String email);

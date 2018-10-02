@@ -2,49 +2,28 @@ package com.journal.app.controllers;
 
 
 import com.journal.app.database.MultiTenantRegistration;
-import com.journal.app.models.DTO.CompanyDTO;
-import com.journal.app.models.DTO.UserDTO;
-import com.journal.app.models.DTO.auth.LoginResponseDTO;
-import com.journal.app.models.DTO.auth.UserCompanyResponseDTO;
-import com.journal.app.models.domain.Authority;
 import com.journal.app.models.domain.Company;
 import com.journal.app.models.domain.User;
-import com.journal.app.models.domain.UserCompany;
 import com.journal.app.models.enums.CalendarType;
 import com.journal.app.models.enums.Gender;
 import com.journal.app.models.enums.InvoiceType;
-import com.journal.app.models.enums.UserRole;
-import com.journal.app.models.services.UserCompanyService;
 import com.journal.app.models.services.UserService;
 import com.journal.app.models.services.impl.UserServiceImpl;
 import com.journal.app.security.JwtAuthenticationRequest;
 import com.journal.app.security.JwtTokenUtil;
-import com.journal.app.security.service.JwtAuthenticationResponse;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
-import org.json.JSONException;
-import org.json.JSONObject;
 import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.mobile.device.Device;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.sql.Connection;
-import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.List;
 
 @RestController
 public class AppController {

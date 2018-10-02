@@ -1,11 +1,7 @@
 package com.journal.app.models.services;
 
-import com.journal.app.models.DTO.AccountGroupDTO;
-import com.journal.app.models.DTO.UserDTO;
 import com.journal.app.models.domain.AccountGroup;
-import com.journal.app.models.domain.User;
 import com.journal.app.models.repositories.AccountGroupRepository;
-import com.journal.app.models.repositories.UserRepository;
 import org.hibernate.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

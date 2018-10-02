@@ -1,7 +1,6 @@
 package com.journal.app.security;
 
 import com.journal.app.controllers.App;
-import com.journal.app.models.domain.UserCompany;
 import com.journal.app.security.service.JwtUserDetailsServiceImpl;
 import io.jsonwebtoken.ExpiredJwtException;
 import org.apache.commons.logging.Log;
@@ -24,7 +23,7 @@ import java.util.List;
 
 public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
 
-    private final Log logger = LogFactory.getLog(this.getClass());
+    private final Log LOGGER = LogFactory.getLog(this.getClass());
 
     @Autowired
     private UserDetailsService userDetailsService;
@@ -45,22 +44,22 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
             try {
                 username = jwtTokenUtil.getUsernameFromToken(authToken);
             } catch (IllegalArgumentException e) {
-                logger.error("an error occurred during getting username from token", e);
+                LOGGER.error("an error occurred during getting username from token", e);
             } catch (ExpiredJwtException e) {
-                logger.warn("the token is expired and not valid anymore");
+                LOGGER.warn("the token is expired and not valid anymore");
             }
             try {
                 roles = jwtTokenUtil.getRolesFromToken(authToken);
             } catch (IllegalArgumentException e) {
-                logger.error("an error occurred during getting user role from token", e);
+                LOGGER.error("an error occurred during getting user role from token", e);
             } catch (ExpiredJwtException e) {
-                logger.warn("the token is expired and not valid anymore");
+                LOGGER.warn("the token is expired and not valid anymore");
             }
         } else {
-            logger.warn("couldn't find auth token string, will ignore the header");
+            LOGGER.warn("couldn't find auth token string, will ignore the header");
         }
 
-        logger.info("checking authentication for user " + username);
+        LOGGER.info("checking authentication for user " + username);
         if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
 
             // It is not compelling necessary to load the use details from the database. You could also store the information
@@ -77,7 +76,7 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
             if (jwtTokenUtil.validateToken(authToken, userDetails)) {
                 UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
                 authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-                logger.info("authenticated user " + username + ", setting security context");
+                LOGGER.info("authenticated user " + username + ", setting security context");
                 SecurityContextHolder.getContext().setAuthentication(authentication);
             }
         }

@@ -3,6 +3,7 @@ package com.journal.app.controllers;
 import com.journal.app.exceptions.UserAlreadyExistsException;
 import com.journal.app.exceptions.ValidationException;
 import com.journal.app.models.DTO.auth.RegisterRequestDTO;
+import com.journal.app.models.DTO.users.UserDTO;
 import com.journal.app.models.DTO.users.UserResponseDTO;
 import com.journal.app.models.services.UserService;
 import com.journal.app.responseMessage.ApiMessageResponse;
@@ -22,7 +23,7 @@ import static com.journal.app.utils.MessageConstant.USER_ADD_MESSAGE;
 @RequestMapping(API_VER + USERS_PATH)
 public class UserController {
 
-    private static final Logger logger = LogManager.getLogger(UserController.class);
+    private static final Logger LOGGER = LogManager.getLogger(UserController.class);
 
 
     @Autowired
@@ -30,7 +31,6 @@ public class UserController {
 
 
     @RequestMapping(method = RequestMethod.POST, value = REGISTER)
-//    @ResponseBody
     public ResponseEntity<ApiMessageResponse> register(@Valid @RequestBody RegisterRequestDTO registerRequestDTO) {
         System.out.println(registerRequestDTO.toString());
         ApiMessageResponse apiMessageResponse = new ApiMessageResponse();
@@ -45,9 +45,10 @@ public class UserController {
     }
 
 
-    @RequestMapping("/users/{id}")
-    public UserResponseDTO getUser(@PathVariable Long id) {
-        return userService.getUser(id);
+    @RequestMapping(method = RequestMethod.GET, value="/{id}")
+    public UserDTO getUser(@PathVariable Long id) {
+        LOGGER.info("getting user with id " + id);
+        return userService.getUserDetails(id);
     }
 
 //    @RequestMapping(method = RequestMethod.POST, value = "/users")

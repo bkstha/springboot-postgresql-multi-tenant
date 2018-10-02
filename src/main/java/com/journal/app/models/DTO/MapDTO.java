@@ -1,5 +1,6 @@
 package com.journal.app.models.DTO;
 
+import com.journal.app.models.DTO.users.UserDTO;
 import com.journal.app.models.domain.User;
 import com.journal.app.models.domain.UserCompany;
 

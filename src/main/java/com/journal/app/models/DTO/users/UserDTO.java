@@ -1,6 +1,7 @@
-package com.journal.app.models.DTO;
+package com.journal.app.models.DTO.users;
 
 
+import com.journal.app.models.DTO.UsersCompanyDTO;
 import com.journal.app.models.enums.Gender;
 import com.journal.app.models.enums.UserDate;
 

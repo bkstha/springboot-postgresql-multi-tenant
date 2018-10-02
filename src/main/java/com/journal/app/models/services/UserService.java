@@ -1,11 +1,11 @@
 package com.journal.app.models.services;
 
 import com.journal.app.models.DTO.PageResponseDTO;
-import com.journal.app.models.DTO.UserDTO;
+import com.journal.app.models.DTO.users.UserDTO;
 import com.journal.app.models.DTO.auth.RegisterRequestDTO;
 import com.journal.app.models.DTO.users.UserRequestDTO;
 import com.journal.app.models.DTO.users.UserResponseDTO;
-
+import com.journal.app.models.domain.User;
 
 
 public interface UserService {
@@ -34,7 +34,10 @@ public interface UserService {
     UserResponseDTO updateUser(UserRequestDTO userRequestDTO);
 
     //get user
-    UserResponseDTO getUser(long id);
+    User getUser(long id);
+
+    //get user details with company and its authorities
+    UserDTO getUserDetails(long id);
 
     //get user list
     PageResponseDTO<UserResponseDTO> getUsers();

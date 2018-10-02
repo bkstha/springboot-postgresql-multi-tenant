@@ -4,7 +4,7 @@ import com.journal.app.exceptions.DataNotFoundException;
 import com.journal.app.exceptions.UserAlreadyExistsException;
 import com.journal.app.models.DTO.MapDTO;
 import com.journal.app.models.DTO.PageResponseDTO;
-import com.journal.app.models.DTO.UserDTO;
+import com.journal.app.models.DTO.users.UserDTO;
 import com.journal.app.models.DTO.auth.RegisterRequestDTO;
 import com.journal.app.models.DTO.users.UserRequestDTO;
 import com.journal.app.models.DTO.users.UserResponseDTO;
@@ -72,9 +72,18 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserResponseDTO getUser(long id) {
-//        return userRepository.findOne(id);
-        return null;
+    public User getUser(long id) {
+        return userRepository.findById(id);
+    }
+
+    @Override
+    public UserDTO getUserDetails(long id){
+        User user = getUser(id);
+        if (user == null) {
+            throw new DataNotFoundException("User not found with id "+id+".");
+        } else {
+            return MapDTO.userToUserDTO(user);
+        }
     }
 
     @Override
