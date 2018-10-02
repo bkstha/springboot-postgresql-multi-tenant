@@ -35,7 +35,7 @@ public class CurrentTenantIdentifierResolverImpl implements CurrentTenantIdentif
             String userSchema = httpServletRequest.getHeader("schema");
 //            String userSchema = jwtTokenUtil.getSchemaFromToken(userToken);
 
-            if (userToken == null || userToken == null) {
+            if (userToken == null || userSchema == null) {
                 logger.info("resolveCurrentTenantIdentifier to public (user=" + PUBLIC + ")");
                 return PUBLIC;
             } else {
