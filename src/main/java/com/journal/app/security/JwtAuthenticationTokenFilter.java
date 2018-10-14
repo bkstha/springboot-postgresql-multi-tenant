@@ -36,7 +36,7 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws ServletException, IOException {
-        final String authToken = request.getHeader(this.tokenHeader);
+        final String authToken = request.getHeader(tokenHeader);
 
         String username = null;
         List<String> roles = null;
